@@ -1,0 +1,633 @@
+{
+  "modulos": [
+
+    {
+      "codigo": "1",
+      "nome": "MÓDULO 1 – COMPOSIÇÃO DA REMUNERAÇÃO",
+      "submodulos": [],
+      "itens": [
+        {
+          "codigo": "A",
+          "id_tecnico": "salario_base",
+          "descricao": "Salário Base",
+          "tipo": "parametro"
+        },
+        {
+          "codigo": "TOTAL",
+          "id_tecnico": "total_remuneracao",
+          "descricao": "TOTAL",
+          "tipo": "soma",
+          "config": {
+            "base": ["salario_base"]
+          }
+        }
+      ]
+    },
+
+    {
+      "codigo": "2",
+      "nome": "MÓDULO 2 – ENCARGOS E BENEFÍCIOS ANUAIS, MENSAIS E DIÁRIOS",
+      "submodulos": [
+
+        {
+          "codigo": "2.1",
+          "nome": "13º Salário, Férias e Adicional de Férias",
+          "itens": [
+            {
+              "codigo": "A",
+              "id_tecnico": "decimo_terceiro",
+              "descricao": "13º Salário",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_13",
+              "config": {
+                "base": ["total_remuneracao"]
+              }
+            },
+            {
+              "codigo": "B",
+              "id_tecnico": "ferias",
+              "descricao": "Férias e Adicional de Férias",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_ferias",
+              "config": {
+                "base": ["total_remuneracao"]
+              }
+            },
+            {
+              "codigo": "TOTAL",
+              "id_tecnico": "total_21",
+              "descricao": "TOTAL",
+              "tipo": "soma",
+              "config": {
+                "base": ["decimo_terceiro", "ferias"]
+              }
+            }
+          ]
+        },
+
+        {
+          "codigo": "2.2",
+          "nome": "GPS, FGTS e outras contribuições",
+          "itens": [
+
+            {
+              "codigo": "A",
+              "id_tecnico": "inss",
+              "descricao": "INSS",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_inss",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "B",
+              "id_tecnico": "salario_educacao",
+              "descricao": "Salário Educação",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_salario_educacao",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "C",
+              "id_tecnico": "sat",
+              "descricao": "SAT - Seguro Acidente do Trabalho",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_sat",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "D",
+              "id_tecnico": "sesc_sesi",
+              "descricao": "SESC ou SESI",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_sesc",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "E",
+              "id_tecnico": "senai_senac",
+              "descricao": "SENAI - SENAC",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_senai",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "F",
+              "id_tecnico": "sebrae",
+              "descricao": "SEBRAE",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_sebrae",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "G",
+              "id_tecnico": "incra",
+              "descricao": "INCRA",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_incra",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "H",
+              "id_tecnico": "fgts",
+              "descricao": "FGTS",
+              "tipo": "percentual_parametrizado",
+              "parametro": "perc_fgts",
+              "config": {
+                "base": ["total_remuneracao", "total_21"]
+              }
+            },
+            {
+              "codigo": "TOTAL",
+              "id_tecnico": "total_22",
+              "descricao": "TOTAL",
+              "tipo": "soma",
+              "config": {
+                "base": [
+                  "inss",
+                  "salario_educacao",
+                  "sat",
+                  "sesc_sesi",
+                  "senai_senac",
+                  "sebrae",
+                  "incra",
+                  "fgts"
+                ]
+              }
+            },
+            {
+              "codigo": "PT",
+              "id_tecnico": "percentual_total_22",
+              "descricao": "Percentual Total 2.2",
+              "tipo": "soma",
+              "config": {
+                "base": [
+                  "perc_inss",
+                  "perc_salario_educacao",
+                  "perc_sat",
+                  "perc_sesc",
+                  "perc_senai",
+                  "perc_sebrae",
+                  "perc_incra",
+                  "perc_fgts"
+                ]
+              },"exibir": false}
+          ]
+        },
+
+        {
+        "codigo": "2.3",
+        "nome": "Benefícios Mensais e Diários",
+        "itens": [
+
+            {
+                "codigo": "A1",
+                "id_tecnico": "valor_vt_unit",
+                "descricao": "Valor Unitário Passagem",
+                "tipo": "parametro",
+                "exibir": false
+                },
+                {
+                "codigo": "A2",
+                "id_tecnico": "passagens_dia",
+                "descricao": "Passagens por dia",
+                "tipo": "parametro",
+                "exibir": false
+                },
+                {
+                "codigo": "A3",
+                "id_tecnico": "dias_vt",
+                "descricao": "Dias VT",
+                "tipo": "parametro",
+                "exibir": false
+                },
+                {
+                "codigo": "A4",
+                "id_tecnico": "vt_bruto",
+                "descricao": "VT Bruto",
+                "tipo": "multiplicacao",
+                "config": {
+                    "base": ["valor_vt_unit", "passagens_dia", "dias_vt"]
+                },
+                "exibir": false
+                },
+                {
+                "codigo": "A5",
+                "id_tecnico": "desconto_vt",
+                "descricao": "Desconto VT (6%)",
+                "tipo": "percentual_parametrizado",
+                "parametro": "perc_desconto_vt",
+                "config": {
+                    "base": ["salario_base"]
+                },
+                "exibir": false
+                },
+                {
+                "codigo": "A",
+                "id_tecnico": "aux_transporte",
+                "descricao": "Auxílio Transporte",
+                "tipo": "subtracao_limitada",
+                "config": {
+                    "base": ["vt_bruto", "desconto_vt"]
+                },
+                "exibir_coluna_parametro": "valor_vt_unit"
+                },
+
+            {
+            "codigo": "B1",
+            "id_tecnico": "valor_ref_unit",
+            "descricao": "Valor Unitário Refeição",
+            "tipo": "parametro",
+            "exibir": false
+            },
+            {
+            "codigo": "B2",
+            "id_tecnico": "dias_ref",
+            "descricao": "Dias Refeição",
+            "tipo": "parametro",
+            "exibir": false
+            },
+            {
+            "codigo": "B",
+            "id_tecnico": "aux_refeicao",
+            "descricao": "Auxílio-Refeição/Alimentação",
+            "tipo": "multiplicacao",
+            "config": {
+                "base": ["valor_ref_unit", "dias_ref"]
+            },
+            "exibir_coluna_parametro": "valor_ref_unit"
+            },
+
+            {
+            "codigo": "C",
+            "id_tecnico": "cesta_basica",
+            "descricao": "Cesta Básica",
+            "tipo": "parametro"
+            },
+            {
+            "codigo": "D",
+            "id_tecnico": "beneficio_social",
+            "descricao": "Benefício Social e Familiar",
+            "tipo": "parametro"
+            },
+            {
+            "codigo": "E",
+            "id_tecnico": "aux_saude",
+            "descricao": "Auxílio Saúde",
+            "tipo": "parametro"
+            },
+
+            {
+            "codigo": "TOTAL",
+            "id_tecnico": "total_23",
+            "descricao": "TOTAL",
+            "tipo": "soma",
+            "config": {
+                "base": [
+                "aux_transporte",
+                "aux_refeicao",
+                "cesta_basica",
+                "beneficio_social",
+                "aux_saude"
+                ]
+            }
+            }
+        ]
+        }
+
+      ],
+
+      "itens": [
+        {
+          "codigo": "TOTAL",
+          "id_tecnico": "total_modulo_2",
+          "descricao": "TOTAL MÓDULO 2",
+          "tipo": "soma",
+          "config": {
+            "base": ["total_21", "total_22", "total_23"]
+          }
+        }
+      ]
+    },
+
+    {
+      "codigo": "3",
+      "nome": "MÓDULO 3 – PROVISÃO PARA RESCISÃO",
+      "submodulos": [],
+      "itens": [
+
+        {
+          "tipo": "percentual_fixo",
+          "codigo": "A",
+          "config": {
+            "base": [
+              "total_remuneracao"
+            ],
+            "percentual": 0.004166666665
+          },
+          "descricao": "Aviso Prévio Indenizado",
+          "id_tecnico": "aviso_indenizado"
+        },
+
+        {
+          "codigo": "B",
+          "id_tecnico": "fgts_aviso_indenizado",
+          "descricao": "FGTS sobre Aviso Indenizado",
+          "tipo": "percentual_parametrizado",
+          "parametro": "perc_fgts",
+          "config": { "base": ["aviso_indenizado"] }
+        },
+
+        {
+          "codigo": "C",
+          "id_tecnico": "multa_fgts_indenizado",
+          "descricao": "Multa FGTS Aviso Indenizado",
+          "tipo": "percentual_parametrizado",
+          "parametro": "perc_multa_fgts",
+          "config": { "base": ["total_remuneracao"] }
+        },
+
+        {
+          "codigo": "D",
+          "id_tecnico": "aviso_trabalhado",
+          "descricao": "Aviso Prévio Trabalhado",
+          "tipo": "percentual_parametrizado",
+          "parametro": "perc_aviso_trabalhado",
+          "config": { "base": ["total_remuneracao"] }
+        },
+
+        {
+          "codigo": "E",
+          "id_tecnico": "encargos_aviso_trabalhado",
+          "descricao": "Encargos sobre Aviso Trabalhado",
+          "tipo": "percentual_truncado",
+          "config": {
+            "base": ["aviso_trabalhado"],
+            "percentual_base": "percentual_total_22"
+          }
+        },
+
+        {
+          "codigo": "F",
+          "id_tecnico": "multa_fgts_trabalhado",
+          "descricao": "Multa FGTS Aviso Trabalhado",
+          "tipo": "percentual_parametrizado",
+          "parametro": "perc_multa_fgts",
+          "config": { "base": ["total_remuneracao"] }
+        },
+
+        {
+          "codigo": "TOTAL",
+          "id_tecnico": "total_modulo_3",
+          "descricao": "TOTAL",
+          "tipo": "soma",
+          "config": {
+            "base": [
+              "aviso_indenizado",
+              "fgts_aviso_indenizado",
+              "multa_fgts_indenizado",
+              "aviso_trabalhado",
+              "encargos_aviso_trabalhado",
+              "multa_fgts_trabalhado"
+            ]
+          }
+        }
+
+      ]
+    },
+    {
+      "codigo": "4",
+      "nome": "MÓDULO 4 – CUSTO DE REPOSIÇÃO",
+      "submodulos": [],
+      "itens": [
+
+        { "codigo": "P1", "id_tecnico": "perc_ferias_41", "descricao": "Percentual Férias", "tipo": "parametro", "exibir": false },
+        { "codigo": "P2", "id_tecnico": "perc_ausencias_legais", "descricao": "Percentual Ausências Legais", "tipo": "parametro", "exibir": false },
+        { "codigo": "P3", "id_tecnico": "perc_licenca_paternidade", "descricao": "Percentual Licença Paternidade", "tipo": "parametro", "exibir": false },
+        { "codigo": "P4", "id_tecnico": "perc_acidente_trabalho", "descricao": "Percentual Acidente Trabalho", "tipo": "parametro", "exibir": false },
+        { "codigo": "P5", "id_tecnico": "perc_maternidade", "descricao": "Percentual Maternidade", "tipo": "parametro", "exibir": false },
+        { "codigo": "P6", "id_tecnico": "perc_aux_doenca", "descricao": "Percentual Auxílio Doença", "tipo": "parametro", "exibir": false },
+        { "codigo": "P7", "id_tecnico": "perc_outros_41", "descricao": "Percentual Outros", "tipo": "parametro", "exibir": false },
+
+        { "codigo": "A", "id_tecnico": "ferias_41", "descricao": "Férias", "tipo": "percentual_parametrizado", "parametro": "perc_ferias_41", "config": { "base": ["total_remuneracao"] } },
+        { "codigo": "B", "id_tecnico": "ausencias_legais", "descricao": "Ausências Legais", "tipo": "percentual_parametrizado", "parametro": "perc_ausencias_legais", "config": { "base": ["total_remuneracao"] } },
+        { "codigo": "C", "id_tecnico": "licenca_paternidade", "descricao": "Licença Paternidade", "tipo": "percentual_parametrizado", "parametro": "perc_licenca_paternidade", "config": { "base": ["total_remuneracao"] } },
+        { "codigo": "D", "id_tecnico": "acidente_trabalho", "descricao": "Acidente de Trabalho", "tipo": "percentual_parametrizado", "parametro": "perc_acidente_trabalho", "config": { "base": ["total_remuneracao"] } },
+        { "codigo": "E", "id_tecnico": "afastamento_maternidade", "descricao": "Afastamento Maternidade", "tipo": "percentual_parametrizado", "parametro": "perc_maternidade", "config": { "base": ["total_remuneracao"] } },
+        { "codigo": "F", "id_tecnico": "auxilio_doenca", "descricao": "Auxílio Doença", "tipo": "percentual_parametrizado", "parametro": "perc_aux_doenca", "config": { "base": ["total_remuneracao"] } },
+        { "codigo": "G", "id_tecnico": "outros_41", "descricao": "Outros", "tipo": "percentual_parametrizado", "parametro": "perc_outros_41", "config": { "base": ["total_remuneracao"] } },
+
+        {
+          "codigo": "TOTAL",
+          "id_tecnico": "total_modulo_4",
+          "descricao": "TOTAL",
+          "tipo": "soma",
+          "config": {
+            "base": [
+              "ferias_41",
+              "ausencias_legais",
+              "licenca_paternidade",
+              "acidente_trabalho",
+              "afastamento_maternidade",
+              "auxilio_doenca",
+              "outros_41"
+            ]
+          }
+        }
+
+      ]
+    },
+
+    {
+      "codigo": "5",
+      "nome": "MÓDULO 5 – INSUMOS DIVERSOS",
+      "submodulos": [],
+      "itens": [
+
+        { "codigo": "A", "id_tecnico": "uniformes", "descricao": "Uniformes", "tipo": "parametro" },
+        { "codigo": "B", "id_tecnico": "materiais", "descricao": "Materiais/Utensílios", "tipo": "parametro" },
+        { "codigo": "C", "id_tecnico": "equipamentos", "descricao": "Equipamentos", "tipo": "parametro" },
+        { "codigo": "D", "id_tecnico": "utensilios", "descricao": "Utensílios", "tipo": "parametro" },
+
+        {
+          "codigo": "TOTAL",
+          "id_tecnico": "total_modulo_5",
+          "descricao": "TOTAL",
+          "tipo": "soma",
+          "config": {
+            "base": ["uniformes", "materiais", "equipamentos", "utensilios"]
+          }
+        }
+
+      ]
+    },
+    {
+      "codigo": "6",
+      "nome": "MÓDULO 6 – CUSTOS INDIRETOS, TRIBUTOS E LUCRO",
+      "submodulos": [],
+      "itens": [
+
+        {
+          "codigo": "B0",
+          "id_tecnico": "base_inicial",
+          "descricao": "Base Inicial",
+          "tipo": "soma",
+          "config": {
+            "base": [
+              "total_remuneracao",
+              "total_21",
+              "total_22",
+              "total_23",
+              "total_modulo_3",
+              "total_modulo_4",
+              "total_modulo_5"
+            ]
+          },
+          "exibir":false
+        },
+
+        {
+          "codigo": "A",
+          "id_tecnico": "custos_indiretos",
+          "descricao": "Custos Indiretos",
+          "tipo": "percentual_truncado",
+          "parametro": "perc_custos_indiretos",
+          "config": {
+            "base": ["base_inicial"]
+          }
+          
+        },
+
+        {
+          "codigo": "B1",
+          "id_tecnico": "base_lucro",
+          "descricao": "Base Lucro",
+          "tipo": "soma",
+          "config": {
+            "base": ["base_inicial", "custos_indiretos"]
+          },
+          "exibir":false
+          
+        },
+
+        {
+          "codigo": "B",
+          "id_tecnico": "lucro",
+          "descricao": "Lucro",
+          "tipo": "percentual_truncado",
+          "parametro": "perc_lucro",
+          "config": {
+            "base": ["base_lucro"]
+          }
+        },
+
+        {
+          "codigo": "B2",
+          "id_tecnico": "base_incidencia",
+          "descricao": "Base Incidência",
+          "tipo": "soma",
+          "config": {
+            "base": ["base_inicial", "custos_indiretos", "lucro"]
+          },
+          "exibir":false
+        },
+
+        {
+          "codigo": "P1",
+          "id_tecnico": "perc_pis_cofins",
+          "descricao": "Percentual PIS/COFINS",
+          "tipo": "parametro",
+          "exibir":false
+        },
+
+        {
+          "codigo": "P2",
+          "id_tecnico": "perc_iss",
+          "descricao": "Percentual ISS",
+          "tipo": "parametro",
+          "exibir":false
+        },
+
+        {
+          "codigo": "PT",
+          "id_tecnico": "perc_total_tributos",
+          "descricao": "Percentual Total Tributos",
+          "tipo": "soma",
+          "config": {
+            "base": ["perc_pis_cofins", "perc_iss"]
+          },
+          "exibir":false
+        },
+
+        {
+          "codigo": "B3",
+          "id_tecnico": "subtotal_com_tributos",
+          "descricao": "Subtotal com Tributos",
+          "tipo": "por_dentro_base",
+          "config": {
+            "percentual_base": "perc_total_tributos",
+            "base": ["base_incidencia"]
+          },
+          "exibir":false
+        },
+
+        {
+          "codigo": "C1",
+          "id_tecnico": "pis_cofins",
+          "descricao": "PIS/COFINS",
+          "tipo": "percentual_truncado",
+          "config": {
+            "percentual_base": "perc_pis_cofins",
+            "base": ["subtotal_com_tributos"]
+          }
+        },
+
+        {
+          "codigo": "C2",
+          "id_tecnico": "iss",
+          "descricao": "ISS",
+          "tipo": "percentual_truncado",
+          "config": {
+            "percentual_base": "perc_iss",
+            "base": ["subtotal_com_tributos"]
+          }
+        },
+
+        {
+          "codigo": "CT",
+          "id_tecnico": "total_tributos",
+          "descricao": "Total Tributos",
+          "tipo": "soma",
+          "config": {
+            "base": ["pis_cofins", "iss"]
+          }
+        },
+
+        {
+          "codigo": "TOTAL",
+          "id_tecnico": "total_modulo_6",
+          "descricao": "TOTAL",
+          "tipo": "soma",
+          "config": {
+            "base": ["custos_indiretos", "lucro", "total_tributos"]
+          }
+        }
+
+      ]
+    }
+
+  ]
+}
