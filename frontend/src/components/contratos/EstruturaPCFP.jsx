@@ -254,13 +254,13 @@ export default function EstruturaPCFP({
              <button type="button" onClick={() => removeItem(modIndex, subIndex, itemIndex)} className="p-2 hover:bg-destructive/10 hover:text-destructive rounded-xl text-slate-500 transition-colors"><TrashIcon className="w-5 h-5"/></button>
            </div>
         )}
-        <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-          <div className="md:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="p-4 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          <div className="md:col-span-10 grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1 md:col-span-2">
-              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] pl-1">Nome do Item</label>
+              <label className="text-[11px] font-bold text-primary/70 uppercase tracking-widest pl-1">Nome do Item</label>
                 <input
                   disabled={readOnly}
-                  className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-900 border-2 border-border dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 dark:text-slate-100 font-black text-base placeholder:opacity-30 disabled:opacity-70 shadow-inner"
+                  className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-900 border-2 border-border dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 dark:text-slate-100 font-bold text-base placeholder:opacity-30 disabled:opacity-70 shadow-inner"
                   value={item.descricao || ""}
                   placeholder="Ex: Salário Base..."
                   onChange={(e) => updateItem(modIndex, subIndex, itemIndex, (i) => {
@@ -268,7 +268,7 @@ export default function EstruturaPCFP({
                     i.id_tecnico = gerarId(e.target.value);
                   })}
                 />
-              <div className="text-[9px] text-muted-foreground font-mono font-black pl-3 opacity-60 uppercase">ID: {item.id_tecnico}</div>
+              <div className="text-[9px] text-muted-foreground font-mono font-black pl-3 opacity-90 uppercase">ID: {item.id_tecnico}</div>
             </div>
             
             <div className="space-y-1">
@@ -364,7 +364,7 @@ export default function EstruturaPCFP({
                 </div>
               ) : (
                 <div className="h-full flex items-center pt-8">
-                  <span className="text-[11px] text-primary/70 font-black uppercase tracking-[0.2em] bg-primary/5 px-4 py-2 rounded-xl border border-primary/10">Processamento Automático</span>
+                  <span className="text-[11px] text-primary font-black uppercase tracking-[0.2em] bg-primary/5 px-4 py-2 rounded-xl border border-primary/10">Processamento Automático</span>
                 </div>
               )}
             </div>
@@ -381,12 +381,12 @@ export default function EstruturaPCFP({
             )}
           </div>
           
-          <div className="md:col-span-3 h-full min-h-[140px] flex flex-col justify-center items-center bg-primary/5 dark:bg-primary/10 rounded-3xl p-8 border-2 border-primary/20 group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-300 shadow-inner group-hover:border-primary/40 group-hover:scale-[1.02] transform">
-            <span className="text-[11px] font-black text-primary uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+          <div className="md:col-span-2 h-full min-h-[80px] flex flex-col justify-center items-center bg-primary/5 dark:bg-primary/10 rounded-2xl p-4 border-2 border-primary/20 group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-300 shadow-inner group-hover:border-primary/40 group-hover:scale-[1.02] transform">
+            <span className="text-[11px] font-black text-primary uppercase tracking-[0.3em] mb-2 flex items-center gap-2">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" /> Live Result
             </span>
             <div className="text-center">
-              <span className={`text-3xl font-black font-mono tracking-tighter transition-all duration-500 ${temValor ? 'text-primary' : 'text-slate-400'}`}>
+              <span className={`text-xl font-black font-mono tracking-tighter transition-all duration-500 ${temValor ? 'text-primary' : 'text-slate-400'}`}>
                 {temValor ? `R$ ${Number(valorAtual).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : "0,00"}
               </span>
             </div>
@@ -414,12 +414,12 @@ export default function EstruturaPCFP({
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-card p-6 rounded-[32px] border-2 border-slate-200 dark:border-border shadow-xl ring-1 ring-white/5 bg-gradient-to-br from-card to-secondary/30">
         <div className="flex-1">
            <div className="flex items-center gap-4">
-              <div className="p-3 bg-primary text-white rounded-2xl shadow-xl shadow-primary/30">
+              <div className="p-3 bg-slate-900 dark:bg-primary text-white rounded-2xl shadow-xl shadow-primary/30">
                  <DocumentCheckIcon className="w-8 h-8" />
               </div>
               <div>
                  <h2 className="text-lg font-black text-foreground tracking-tight leading-none mb-1">{title}</h2>
-                 <p className="text-[10px] text-foreground font-black opacity-50 tracking-tight">{description}</p>
+                 <p className="text-[10px] text-foreground font-black opacity-80 tracking-tight">{description}</p>
               </div>
            </div>
         </div>
@@ -490,14 +490,14 @@ export default function EstruturaPCFP({
       ) : (
          <div className="space-y-16 animate-in fade-in duration-500">
             {/* TABS */}
-            <div className="bg-card p-2 rounded-2xl border border-border flex gap-2 overflow-x-auto custom-scrollbar shadow-lg ring-1 ring-white/5 sticky top-2 z-30 backdrop-blur-md bg-opacity-95">
+            <div className="bg-card p-2 rounded-2xl border border-border flex gap-2 overflow-x-auto custom-scrollbar shadow-lg ring-1 ring-white/5 mb-4">
                {estrutura?.modulos?.map((m, i) => (
                   <button 
                     key={i} 
                     onClick={() => setActiveTab(i)} 
                     className={`px-6 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex-1 text-center border-b-2
                       ${activeTab === i 
-                        ? 'bg-slate-900 dark:bg-primary text-white border-primary shadowed-xl' 
+                        ? 'bg-slate-900 dark:bg-primary text-white border-primary shadow-xl' 
                         : 'text-muted-foreground border-transparent hover:bg-secondary hover:text-foreground'
                       }`}
                   >
@@ -517,12 +517,12 @@ export default function EstruturaPCFP({
             {/* SEÇÕES */}
             {estrutura?.modulos?.map((m, mi) => (
                mi === activeTab && (
-                  <div key={mi} className="bg-card rounded-[64px] border-2 border-border overflow-hidden shadow-2xl ring-1 ring-white/5 animate-in slide-in-from-bottom-12 duration-700">
-                     <div className="bg-secondary/40 px-10 py-6 flex flex-wrap items-center justify-between gap-6 border-b-2 border-border">
+                  <div key={mi} className="bg-card rounded-3xl border-2 border-border overflow-hidden shadow-2xl ring-1 ring-white/5 animate-in slide-in-from-bottom-12 duration-700">
+                     <div className="bg-secondary/40 px-6 py-3 flex flex-wrap items-center justify-between gap-4 border-b border-border">
                         <div className="flex-1 flex items-center gap-6 min-w-[280px]">
                            <div className="w-2 h-8 bg-primary rounded-full shadow-lg shadow-primary/40" />
                            <input 
-                              className="font-black text-xl bg-transparent border-none focus:ring-0 outline-none w-full p-0 text-foreground placeholder:opacity-20 tracking-tight" 
+                              className="font-black text-lg bg-transparent border-none focus:ring-0 outline-none w-full p-0 text-foreground placeholder:opacity-20 tracking-tight" 
                               value={m.nome || ""} 
                               onChange={e => setEstrutura(prev => {
                                 const n = clone(prev); n.modulos[mi].nome = e.target.value; return n;
@@ -537,7 +537,7 @@ export default function EstruturaPCFP({
                            </span>
                         </div>
                      </div>
-                     <div className="p-6 space-y-6 group/container">
+                     <div className="p-4 space-y-4 group/container">
                         {/* ITENS DIRETOS */}
                         <div className="space-y-6">
                            {m.itens?.map((item, ii) => renderItem(item, mi, null, ii))}
@@ -545,13 +545,13 @@ export default function EstruturaPCFP({
                         
                         {!readOnly && (
                            <button onClick={() => addItem(mi, null)} className="flex items-center gap-4 text-primary text-base font-black hover:scale-105 transition-all py-6 group/add pl-4 border-2 border-transparent hover:border-primary/20 rounded-3xl hover:bg-primary/5">
-                              <PlusIcon className="w-10 h-10 p-2 bg-primary text-white rounded-xl shadow-xl shadow-primary/40 transition-transform group-hover/add:rotate-90" /> 
+                              <PlusIcon className="w-10 h-10 p-2 bg-slate-900 dark:bg-primary text-white rounded-xl shadow-xl shadow-primary/40 transition-transform group-hover/add:rotate-90 ring-4 ring-primary/10" /> 
                               <span>Adicionar Item ao Módulo</span>
                            </button>
                         )}
 
                         {/* SUBSEÇÕES */}
-                        <div className="space-y-12 mt-12 bg-slate-50 dark:bg-slate-900/50 p-8 rounded-[48px] border-2 border-dashed border-border/80 shadow-inner">
+                        <div className="space-y-8 mt-8 bg-slate-50 dark:bg-slate-900/50 p-6 rounded-3xl border-2 border-dashed border-border/80 shadow-inner">
                            {m.submodulos?.map((sub, si) => (
                               <div key={si} className="pl-8 border-l-4 border-primary/50 relative group/sub">
                                  <div className="flex flex-wrap items-center gap-6 mb-8 -ml-[calc(2rem+4px)]">
@@ -572,7 +572,7 @@ export default function EstruturaPCFP({
                                     {sub.itens?.map((item, ii) => renderItem(item, mi, si, ii))}
                                     {!readOnly && (
                                        <button onClick={() => addItem(mi, si)} className="flex items-center gap-2 text-primary font-black text-sm hover:brightness-125 transition-all py-3 pl-3 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
-                                          <PlusIcon className="w-5 h-5 p-1 bg-primary text-white rounded-lg" /> Item em "{sub.nome}"
+                                          <PlusIcon className="w-5 h-5 p-1 bg-slate-900 dark:bg-primary text-white rounded-lg" /> Item em "{sub.nome}"
                                        </button>
                                     )}
                                  </div>
@@ -583,8 +583,8 @@ export default function EstruturaPCFP({
                               <button onClick={() => setEstrutura(prev => {
                                 const n = clone(prev); if(!n.modulos[mi].submodulos) n.modulos[mi].submodulos = [];
                                 n.modulos[mi].submodulos.push({nome: "Novo Submódulo", itens:[]}); return n;
-                              })} className="w-full py-10 border-4 border-dashed border-border rounded-[40px] text-foreground/40 font-black hover:bg-white dark:hover:bg-slate-800 hover:border-primary/40 hover:text-primary transition-all flex items-center justify-center gap-5 text-xl group shadow-sm hover:shadow-lg">
-                                 <PlusIcon className="w-12 h-12 p-3 bg-white dark:bg-slate-800 border-2 border-border shadow-md rounded-2xl group-hover:rotate-12 transition-all" /> Novo Submódulo
+                              })} className="w-full py-6 border-2 border-dashed border-border rounded-3xl text-foreground/40 font-black hover:bg-white dark:hover:bg-slate-800 hover:border-primary/40 hover:text-primary transition-all flex items-center justify-center gap-5 text-lg group shadow-sm hover:shadow-lg">
+                                 <PlusIcon className="w-12 h-12 p-3 bg-slate-50 dark:bg-slate-800 border-2 border-primary/20 text-primary shadow-xl rounded-2xl group-hover:rotate-12 transition-all shadow-primary/5" /> Novo Submódulo
                               </button>
                            )}
                         </div>

@@ -10,16 +10,16 @@ export default function Modal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 animate-in fade-in duration-300">
       <div 
-        className="bg-card border-2 border-border w-full max-w-lg rounded-[32px] shadow-2xl shadow-black/60 overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300 ring-4 ring-white/5"
+        className="bg-white dark:bg-background border-2 border-border w-full max-w-lg rounded-3xl shadow-2xl shadow-black overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300 ring-1 ring-white/10"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-8 py-6 flex items-center justify-between border-b-2 border-border bg-secondary">
+        <div className="px-8 py-5 flex items-center justify-between border-b border-border bg-slate-50 dark:bg-slate-900/50">
           <div className="flex items-center gap-3">
-             <div className="w-2 h-6 bg-primary rounded-full shadow-lg shadow-primary/40" />
-             <h3 className="text-2xl font-black text-foreground tracking-tight">{title}</h3>
+             <div className="w-1.5 h-6 bg-primary rounded-full shadow-lg shadow-primary/40" />
+             <h3 className="text-xl font-black text-foreground tracking-tight">{title}</h3>
           </div>
           <button 
             onClick={onClose}
@@ -30,14 +30,13 @@ export default function Modal({
         </div>
 
         {/* Content */}
-        <div className="p-10 bg-card text-foreground">
+        <div className="p-8 bg-white dark:bg-background text-foreground">
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
-          <div className="px-8 py-6 bg-secondary border-t-2 border-border flex justify-end gap-4">
-             {/* Note: the custom buttons in footer should pass the styles, but we handle standard ones if they were here */}
+          <div className="px-8 py-5 bg-slate-50 dark:bg-slate-900/50 border-t border-border flex justify-end gap-3">
              {footer}
           </div>
         )}

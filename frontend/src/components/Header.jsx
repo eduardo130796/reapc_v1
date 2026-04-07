@@ -72,7 +72,7 @@ export default function Header({ onMenuClick, title }) {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 glass transition-all">
+    <header className="relative z-30 flex h-16 shrink-0 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 glass transition-all">
       <div className="flex min-w-0 flex-1 items-center gap-4">
         <button
           type="button"

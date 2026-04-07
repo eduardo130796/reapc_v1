@@ -149,7 +149,7 @@ export default function Modelos() {
            <div className="flex items-center gap-6">
               <button 
                 onClick={() => setIsSidebarVisible(!isSidebarVisible)}
-                className="p-2.5 bg-slate-100 dark:bg-slate-900 border-2 border-border rounded-xl text-foreground hover:border-primary transition-all shadow-lg active:scale-90"
+                className="p-2.5 bg-slate-100 dark:bg-slate-900 border-2 border-border rounded-xl text-foreground hover:border-primary transition-all shadow-md active:scale-90"
                 title={isSidebarVisible ? "Recolher Painel" : "Expandir Painel"}
               >
                 {isSidebarVisible ? <ChevronLeftIcon className="w-5 h-5" /> : <Bars3Icon className="w-5 h-5" />}
@@ -162,7 +162,7 @@ export default function Modelos() {
            <div className="flex gap-3">
               <button 
                 onClick={() => { setRefreshing(true); carregarModelos(); }} 
-                className="p-2.5 bg-slate-100 dark:bg-slate-800 border-2 border-border dark:border-slate-700 rounded-xl text-foreground hover:border-primary transition-all shadow-lg active:rotate-180 duration-500"
+                className="p-2.5 bg-slate-100 dark:bg-slate-800 border-2 border-border dark:border-slate-700 rounded-xl text-foreground hover:border-primary transition-all shadow-md active:rotate-180 duration-500"
               >
                 <ArrowPathIcon className={`w-5 h-5 ${refreshing || loading ? "animate-spin text-primary" : ""}`} />
               </button>
@@ -181,7 +181,7 @@ export default function Modelos() {
           
           {/* COLUNA LISTA (4/12) */}
           {isSidebarVisible && (
-            <div className="lg:col-span-4 flex flex-col h-fit sticky top-6 space-y-6 animate-in slide-in-from-left duration-300 max-h-[calc(100vh-120px)]">
+            <div className="lg:col-span-4 flex flex-col h-fit space-y-6 animate-in slide-in-from-left duration-300">
               <div className="relative group shrink-0">
                  <MagnifyingGlassIcon className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                  <input
@@ -209,26 +209,35 @@ export default function Modelos() {
                        <div
                          key={m.id}
                          onClick={() => setModeloSelecionado(m)}
-                         className={`p-7 border-b-2 border-border last:border-0 cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-800/50 group relative
+                         className={`p-4 group/item border-b border-border last:border-0 cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-800/50 relative
                            ${modeloSelecionado?.id === m.id ? "bg-primary/5 dark:bg-primary/10 !border-primary/40 ring-1 ring-primary/20" : ""}
                          `}
                        >
                          <div className="flex items-center justify-between gap-3">
-                           <div className="flex-1 min-w-0">
-                             <h4 className={`text-base font-black truncate leading-tight ${modeloSelecionado?.id === m.id ? "text-primary" : "text-foreground"}`}>
-                               {m.nome}
-                             </h4>
-                             <div className="flex items-center gap-4 mt-3">
-                               <StatusPill ativo={m.ativo} />
-                               <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg border border-border shadow-sm">Estrutura V{m.versao || 1}</span>
-                             </div>
-                           </div>
-                           <div className="flex items-center gap-4">
-                              <button onClick={(e) => handleExcluir(m.id, e)} className="p-3 text-slate-400 hover:text-destructive opacity-0 group-hover:opacity-100 transition-all rounded-2xl hover:bg-destructive/10 border-2 border-transparent hover:border-destructive/20 active:scale-90">
-                                <TrashIcon className="w-6 h-6" />
-                              </button>
-                              <ChevronRightIcon className={`w-8 h-8 text-slate-300 transition-transform ${modeloSelecionado?.id === m.id ? "translate-x-3 text-primary opacity-100" : "group-hover:translate-x-1"}`} />
-                           </div>
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                               <div className={`p-2 rounded-xl transition-all ${modeloSelecionado?.id === m.id ? "bg-slate-900 dark:bg-primary text-white shadow-lg" : "bg-slate-100 dark:bg-slate-800 text-slate-400 group-hover/item:bg-primary/10 group-hover/item:text-primary"}`}>
+                                  <DocumentDuplicateIcon className="w-5 h-5" />
+                               </div>
+                               <div className="flex-1 min-w-0">
+                                 <h4 className={`text-sm font-bold truncate leading-tight ${modeloSelecionado?.id === m.id ? "text-primary" : "text-foreground"}`}>
+                                   {m.nome}
+                                 </h4>
+                                 <div className="flex items-center gap-3 mt-1.5">
+                                   <StatusPill ativo={m.ativo} />
+                                   <span className="text-[9px] text-slate-500 font-black uppercase tracking-widest bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-border shadow-sm">V{m.versao || 1}</span>
+                                 </div>
+                               </div>
+                            </div>
+                            <div className="flex items-center gap-2 shrink-0">
+                               <button 
+                                 onClick={(e) => handleExcluir(m.id, e)} 
+                                 className="p-2 text-slate-400 hover:text-destructive opacity-0 group-hover/item:opacity-100 transition-all rounded-xl hover:bg-destructive/10 border-2 border-transparent hover:border-destructive/20 active:scale-90"
+                                 title="Excluir Modelo"
+                               >
+                                 <TrashIcon className="w-5 h-5" />
+                               </button>
+                               <ChevronRightIcon className={`w-5 h-5 text-slate-300 transition-transform ${modeloSelecionado?.id === m.id ? "translate-x-1 text-primary opacity-100" : "group-hover/item:translate-x-0.5"}`} />
+                            </div>
                          </div>
                        </div>
                      ))
@@ -243,19 +252,19 @@ export default function Modelos() {
             {modeloSelecionado ? (
               <div className="flex flex-col h-full animate-in fade-in slide-in-from-right-12 duration-500">
                 <div className="bg-card border-2 border-border rounded-3xl shadow-2xl mb-8 p-6 ring-1 ring-white/5 relative overflow-hidden shrink-0">
-                   <div className="absolute top-0 right-0 p-10">
-                     <button onClick={() => setModeloSelecionado(null)} className="p-4 text-slate-400 hover:text-foreground bg-slate-100 dark:bg-slate-900 rounded-3xl transition-all border-2 border-border hover:border-primary shadow-xl active:scale-90">
-                        <XMarkIcon className="w-8 h-8" />
+                   <div className="absolute top-0 right-0 p-6">
+                     <button onClick={() => setModeloSelecionado(null)} className="p-3 text-slate-500 hover:text-foreground bg-slate-100 dark:bg-slate-900 rounded-2xl transition-all border-2 border-border hover:border-primary shadow-xl active:scale-90">
+                        <XMarkIcon className="w-6 h-6" />
                      </button>
                    </div>
-                   <div className="flex flex-col md:flex-row md:items-center gap-8">
-                      <div className="p-6 bg-primary text-white rounded-[32px] shadow-2xl shadow-primary/40 rotate-6 transform transition-all">
-                         <DocumentDuplicateIcon className="w-16 h-16" />
+                   <div className="flex flex-col md:flex-row md:items-center gap-6">
+                      <div className="p-4 bg-slate-900 dark:bg-primary text-white rounded-2xl shadow-2xl shadow-primary/40 rotate-3 transform transition-all">
+                         <DocumentDuplicateIcon className="w-12 h-12" />
                       </div>
                       <div className="flex-1">
                          <div className="flex items-center gap-4 mb-1">
                            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/40" />
-                           <span className="text-[10px] text-primary font-black uppercase tracking-[0.4em]">Modelo Estrutural em Edição</span>
+                           <span className="text-[11px] text-primary font-bold uppercase tracking-widest">Modelo Estrutural em Edição</span>
                          </div>
                          <div className="flex items-center gap-6 flex-wrap">
                             <h2 className="text-xl font-black text-foreground tracking-tight leading-tight">{modeloSelecionado.nome}</h2>
