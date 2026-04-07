@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { atualizarContrato } from "../../services/contratosService";
-import { mapContratoToAPI } from "../../services/mappers/contratoMapper";
+import { useState } from "react";
+import { criarContrato } from "../../services/contratosService";
 import Modal from "../ui/Modal";
 import { 
   HashtagIcon, 
@@ -12,33 +11,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 
-export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
+export default function CriarContratoManualModal({ onClose, onSuccess }) {
   const [form, setForm] = useState({
     numero: "",
     fornecedor_nome: "",
     objeto: "",
     vigencia_inicio: "",
     vigencia_fim: "",
-    valor_global: "",
-    status: "Vigente"
+    valor_global: ""
   });
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (contrato) {
-      setForm({
-        numero: contrato.numero ?? "",
-        objeto: contrato.objeto ?? "",
-        fornecedor_nome: contrato.fornecedor_nome ?? contrato.fornecedor ?? "",
-        vigencia_inicio: (contrato.vigencia_inicio ?? contrato.data_inicio ?? "").slice(0, 10),
-        vigencia_fim: (contrato.vigencia_fim ?? contrato.data_fim ?? "").slice(0, 10),
-        valor_global: contrato.valor_global !== undefined && contrato.valor_global !== null
-          ? String(contrato.valor_global)
-          : (contrato.valor_anual !== undefined && contrato.valor_anual !== null ? String(contrato.valor_anual) : ""),
-        status: contrato.status ?? "Vigente"
-      });
-    }
-  }, [contrato]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -47,16 +29,29 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
 
   async function handleSubmit(e) {
     if (e) e.preventDefault();
+    if (!form.numero || !form.fornecedor_nome) {
+      return toast.error("Número e Fornecedor são obrigatórios");
+    }
+
     setLoading(true);
     try {
-      const payload = mapContratoToAPI(form);
-      await atualizarContrato(contrato.id, payload);
-      toast.success("Contrato atualizado com sucesso!");
+      // payload compatível com ContratoCreate no backend
+      const payload = {
+        numero: form.numero,
+        fornecedor: form.fornecedor_nome,
+        objeto: form.objeto,
+        data_inicio: form.vigencia_inicio || null,
+        data_fim: form.vigencia_fim || null,
+        valor_anual: form.valor_global ? Number(form.valor_global) : 0
+      };
+
+      await criarContrato(payload);
+      toast.success("Contrato criado com sucesso!");
       onSuccess?.();
       onClose?.();
     } catch (err) {
       console.error(err);
-      toast.error("Erro ao atualizar contrato");
+      toast.error("Erro ao criar contrato manualmente");
     } finally {
       setLoading(false);
     }
@@ -66,7 +61,7 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
     <Modal
       open={true}
       onClose={onClose}
-      title="Editar Contrato"
+      title="Novo Contrato Manual"
       footer={(
         <div className="flex items-center gap-3">
           <button 
@@ -81,7 +76,7 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
             className="px-8 py-3 bg-slate-900 dark:bg-primary text-white font-black rounded-2xl hover:brightness-110 shadow-xl shadow-primary/20 border-b-4 border-slate-700 dark:border-primary-dark active:translate-y-1 active:border-b-0 transition-all flex items-center gap-2 disabled:opacity-50"
           >
             {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <CheckCircleIcon className="w-5 h-5" />}
-            Salvar Alterações
+            Criar Contrato
           </button>
         </div>
       )}
@@ -91,6 +86,7 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
           <Input 
             label="Número do Contrato" 
             name="numero" 
+            placeholder="Ex: 01/2024"
             value={form.numero} 
             onChange={handleChange}
             icon={<HashtagIcon className="w-5 h-5" />}
@@ -98,6 +94,7 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
           <Input 
             label="Fornecedor" 
             name="fornecedor_nome" 
+            placeholder="Nome da Empresa"
             value={form.fornecedor_nome} 
             onChange={handleChange}
             icon={<UserGroupIcon className="w-5 h-5" />}
@@ -107,28 +104,11 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
         <Input 
           label="Objeto do Contrato" 
           name="objeto" 
+          placeholder="Descrição resumida do serviço"
           value={form.objeto} 
           onChange={handleChange}
           icon={<DocumentTextIcon className="w-5 h-5" />}
         />
-
-        {/* STATUS */}
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] pl-1">
-            Status Repactuação
-          </label>
-          <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-900 border-2 border-border rounded-xl focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-sm"
-          >
-            <option value="Vigente">Vigente</option>
-            <option value="Em Repactuação">Em Repactuação</option>
-            <option value="Concluído">Concluído</option>
-            <option value="Pendente">Pendente</option>
-          </select>
-        </div>
 
         <div className="grid grid-cols-2 gap-4">
           <Input 
@@ -153,6 +133,7 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
           label="Valor Global / Anual" 
           name="valor_global" 
           type="number"
+          placeholder="0.00"
           value={form.valor_global} 
           onChange={handleChange}
           icon={<CurrencyDollarIcon className="w-5 h-5" />}

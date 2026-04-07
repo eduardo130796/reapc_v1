@@ -18,9 +18,25 @@ def listar(user = Depends(require_permission("contratos", "read"))):
 
 
 # ===============================
-# BUSCAR
+# BUSCAR NA API EXTERNA
 # ===============================
-@router.get("/{contrato_id}")
+@router.get("/api/")
+def buscar_api(
+    ug: str,
+    user = Depends(require_permission("contratos", "read"))
+):
+    from app.services.contratos_api_service import buscar_contratos_api_service
+    from fastapi import HTTPException
+    try:
+        return buscar_contratos_api_service(ug)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Erro ao consultar API externa: {str(e)}")
+
+
+# ===============================
+# BUSCAR LOCAL
+# ===============================
+@router.get("/{contrato_id}/")
 def buscar(
     contrato_id: str,
     user = Depends(require_permission("contratos", "read"))

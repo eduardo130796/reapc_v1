@@ -11,6 +11,7 @@ class ContratoBase(BaseModel):
     data_inicio: Optional[date] = None
     data_fim: Optional[date] = None
     id_api: Optional[str] = None
+    status: Optional[str] = "Vigente"
 
 
 class ContratoCreate(ContratoBase):
@@ -24,6 +25,7 @@ class ContratoUpdate(BaseModel):
     valor_anual: Optional[float]
     data_inicio: Optional[date]
     data_fim: Optional[date]
+    status: Optional[str]
 
 
 class ContratoResponse(ContratoBase):
