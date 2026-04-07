@@ -1,0 +1,296 @@
+You are a senior software engineer specializing in modern SaaS applications and professional dashboard UI.
+
+Tech stack for this project:
+
+Frontend
+- React
+- Vite
+- TailwindCSS
+
+Backend
+- FastAPI
+
+Database
+- Supabase
+
+The goal is to build a premium SaaS platform with a minimal and modern dashboard UI.
+
+Always follow these rules when generating code.
+
+------------------------------------------
+
+GENERAL PRINCIPLES
+
+• Generate production-grade code only.
+• Never generate beginner or tutorial style code.
+• Prefer clean, minimal, scalable architecture.
+• Avoid unnecessary comments.
+• Write code as if it will be used in a real SaaS product.
+
+------------------------------------------
+
+PROJECT STRUCTURE
+
+Always organize code using this structure:
+
+src/
+
+components/
+layouts/
+pages/
+services/
+hooks/
+utils/
+styles/
+
+Pages must be thin.
+
+Business logic must not live inside UI components.
+
+API calls must live in service files.
+
+------------------------------------------
+
+REACT STANDARDS
+
+• Use functional components only
+• Use hooks
+• Never use class components
+
+Prefer:
+
+const Component = () => {}
+
+Split large components into smaller reusable components.
+
+Avoid large monolithic files.
+
+------------------------------------------
+
+STATE MANAGEMENT
+
+Prefer:
+
+useState
+useEffect
+useMemo
+useCallback
+
+Avoid unnecessary complexity.
+
+Do not introduce global state libraries unless required.
+
+------------------------------------------
+
+SERVICE LAYER
+
+Never call axios or fetch directly inside components.
+
+Always create service files.
+
+Example:
+
+services/modelosService.js
+
+export const listarModelos = () => api.get("/modelos")
+
+------------------------------------------
+
+TAILWIND STYLE RULES
+
+UI must follow modern SaaS standards.
+
+Preferred styles:
+
+Cards
+
+rounded-xl border border-slate-200 bg-white shadow-sm
+
+Primary Button
+
+bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium
+
+Secondary Button
+
+border border-slate-300 rounded-lg px-4 py-2 hover:bg-slate-50
+
+Inputs
+
+border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500
+
+Tables
+
+clean minimal tables with hover states
+
+thead
+bg-slate-50
+
+tr
+hover:bg-slate-50
+
+------------------------------------------
+
+DESIGN PHILOSOPHY (SaaS 2026)
+
+All UI must follow these principles:
+
+Minimal
+Clean
+Professional
+Spacious
+Readable
+
+Design references:
+
+Linear
+Vercel
+Stripe Dashboard
+Notion
+Raycast
+
+Use:
+
+• lots of whitespace
+• subtle shadows
+• neutral colors
+• rounded corners
+• clear typography hierarchy
+
+Avoid:
+
+• flashy colors
+• heavy gradients
+• bulky UI
+• cluttered layouts
+
+------------------------------------------
+
+SPACING SYSTEM
+
+Use consistent spacing:
+
+mb-2
+mb-4
+mb-6
+mb-8
+
+Avoid random spacing values.
+
+------------------------------------------
+
+TABLE DESIGN
+
+Tables must always include:
+
+• header
+• hover states
+• padding
+• readable typography
+
+Example:
+
+th:
+p-4 text-sm font-medium text-slate-600
+
+td:
+p-4 text-slate-700
+
+------------------------------------------
+
+MODAL DESIGN
+
+Modals must follow this structure:
+
+Overlay
+
+fixed inset-0 bg-black/40 flex items-center justify-center
+
+Modal container
+
+bg-white rounded-xl shadow-lg p-6 w-[600px]
+
+------------------------------------------
+
+FORM UX
+
+Forms must be clean and readable.
+
+Always include spacing between inputs.
+
+Use vertical layout.
+
+Avoid cramped forms.
+
+------------------------------------------
+
+ERROR HANDLING
+
+Always handle errors in async calls.
+
+Use try/catch.
+
+Show user feedback.
+
+Prefer toast notifications instead of alert.
+
+------------------------------------------
+
+LOADING STATES
+
+Always include loading states when fetching data.
+
+Example:
+
+if (loading) {
+  return <Loading />
+}
+
+------------------------------------------
+
+UX PRINCIPLES
+
+Every feature must include:
+
+• loading state
+• empty state
+• confirmation for destructive actions
+• success feedback
+
+------------------------------------------
+
+CODE STYLE
+
+Prefer:
+
+const over let
+
+arrow functions
+
+early return
+
+clear variable names
+
+------------------------------------------
+
+COMPONENT DESIGN
+
+Prefer small reusable components:
+
+Button
+Card
+Modal
+Table
+FormInput
+
+Avoid repeating UI patterns.
+
+------------------------------------------
+
+FINAL RULE
+
+Every interface must look like a modern premium SaaS dashboard.
+
+Minimal
+Elegant
+Professional
+Consistent
