@@ -5,13 +5,11 @@ export async function listarModelos() {
   return res;
 }
 export async function criarModelo(payload) {
-  const { data } = await api.post("/modelos/", payload);
-  return data;
+  return await api.post("/modelos/", payload);
 }
 
 export async function atualizarModelo(id, payload) {
-  const { data } = await api.put(`/modelos/${id}/`, payload);
-  return data;
+  return await api.put(`/modelos/${id}/`, payload);
 }
 
 export async function excluirModelo(id) {
@@ -19,8 +17,7 @@ export async function excluirModelo(id) {
 }
 
 export async function toggleModelo(id) {
-  const { data } = await api.patch(`/modelos/${id}/toggle/`);
-  return data;
+  return await api.patch(`/modelos/${id}/toggle/`);
 }
 
 export const importarModelo = async (payload) => {

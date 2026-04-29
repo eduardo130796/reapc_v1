@@ -3,7 +3,7 @@ from app.database.client import supabase
 
 def listar_por_contrato(contrato_id: str):
     return supabase.table("cargos") \
-        .select("*") \
+        .select("*, cargos_base(*), sindicato:sindicatos(*)") \
         .eq("contrato_id", contrato_id) \
         .order("created_at", desc=True) \
         .execute().data
@@ -11,7 +11,7 @@ def listar_por_contrato(contrato_id: str):
 
 def buscar_por_id(cargo_id: str):
     res = supabase.table("cargos") \
-        .select("*") \
+        .select("*, cargos_base(*), sindicato:sindicatos(*)") \
         .eq("id", cargo_id) \
         .execute()
 

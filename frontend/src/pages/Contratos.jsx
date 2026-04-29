@@ -49,11 +49,12 @@ export default function Contratos() {
   const carregarContratos = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await listarContratos();
-      setContratos(data || []);
+      const res = await listarContratos();
+      setContratos(res?.data || []);
     } catch (err) {
       console.error("Erro ao carregar contratos", err);
       toast.error("Erro ao carregar contratos");
+      setContratos([]); // 🔥 segurança
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -86,15 +87,19 @@ export default function Contratos() {
   // FILTRO & STATS
   // =========================
 
-  const stats = useMemo(() => ({
-    total: contratos.length,
-    emRepactuacao: contratos.filter(c => c.status === "Em Repactuação").length,
-    concluidos: contratos.filter(c => c.status === "Concluído").length,
-    pendentes: contratos.filter(c => c.status === "Pendente").length,
-  }), [contratos]);
+  const stats = useMemo(() => {
+    const lista = Array.isArray(contratos) ? contratos : [];
+
+    return {
+      total: lista.length,
+      emRepactuacao: lista.filter(c => c.status === "Em Repactuação").length,
+      concluidos: lista.filter(c => c.status === "Concluído").length,
+      pendentes: lista.filter(c => c.status === "Pendente").length,
+    };
+  }, [contratos]);
 
   const contratosFiltrados = useMemo(() => {
-    let list = [...(contratos || [])];
+    let list = Array.isArray(contratos) ? [...contratos] : [];
     const termo = busca.toLowerCase();
 
     if (termo) {
@@ -120,10 +125,10 @@ export default function Contratos() {
 
       {/* DASHBOARD SUMMARY */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <StatCard label="Total contratos"  value={stats.total}           color="bg-slate-900" />
-        <StatCard label="Em Repactuação"   value={stats.emRepactuacao}   color="bg-amber-500" />
-        <StatCard label="Concluídos"       value={stats.concluidos}      color="bg-emerald-600" />
-        <StatCard label="Pendentes"        value={stats.pendentes}       color="bg-rose-500" />
+        <StatCard label="Total contratos" value={stats.total} color="bg-slate-900" />
+        <StatCard label="Em Repactuação" value={stats.emRepactuacao} color="bg-amber-500" />
+        <StatCard label="Concluídos" value={stats.concluidos} color="bg-emerald-600" />
+        <StatCard label="Pendentes" value={stats.pendentes} color="bg-rose-500" />
       </div>
 
       {/* CONTROLES */}
@@ -328,10 +333,10 @@ function StatCard({ label, value, color }) {
 
 function StatusBadge({ status }) {
   const configs = {
-    "Vigente":        "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700",
+    "Vigente": "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700",
     "Em Repactuação": "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 border-amber-200 dark:border-amber-500/20",
-    "Concluído":      "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20",
-    "Pendente":       "bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border-rose-200 dark:border-rose-500/20",
+    "Concluído": "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20",
+    "Pendente": "bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border-rose-200 dark:border-rose-500/20",
   };
   const style = configs[status] || configs["Vigente"];
   return (

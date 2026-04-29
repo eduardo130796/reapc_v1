@@ -48,14 +48,8 @@ export default function Login() {
         password
       });
 
-      // 🔥 PRIMEIRO salva o token
-      localStorage.setItem("token", res.access_token);
-
-      // 🔥 AGORA o interceptor consegue enviar
-      const me = await api.get("/auth/me");
-
-      login({
-        user: me,
+      await login({
+        user: res.user,
         token: res.access_token,
         refresh_token: res.refresh_token
       });
@@ -114,11 +108,10 @@ export default function Login() {
               required
               placeholder="seu@email.com"
               disabled={loading}
-              className={`w-full py-3 px-3.5 rounded-lg border transition focus:outline-none text-[15px] bg-[#172341] text-[#e7eefc] border-[#253356] focus:border-blue-600 disabled:opacity-65 ${
-                error && !validateEmail(email)
-                  ? "border-red-500 ring-2 ring-red-400/60"
-                  : "focus:ring-2 focus:ring-blue-400/40"
-              }`}
+              className={`w-full py-3 px-3.5 rounded-lg border transition focus:outline-none text-[15px] bg-[#172341] text-[#e7eefc] border-[#253356] focus:border-blue-600 disabled:opacity-65 ${error && !validateEmail(email)
+                ? "border-red-500 ring-2 ring-red-400/60"
+                : "focus:ring-2 focus:ring-blue-400/40"
+                }`}
             />
           </div>
           <div>
@@ -220,4 +213,4 @@ export default function Login() {
       </style>
     </div>
   );
-  }
+}

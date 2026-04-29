@@ -2,30 +2,34 @@ import { api } from "./api";
 
 export async function buscarPCFP(cargoId) {
   try {
-    const response = await api.get(`/pcfp/${cargoId}`);
-
-    console.log("RESPOSTA API:", response.data);
-
-    // 🔥 AQUI É O PONTO CRÍTICO
-    return response || null;
-
+    return await api.get(`/pcfp/cargo/${cargoId}`);
   } catch (err) {
     console.error("Erro ao buscar PCFP:", err);
     return null;
   }
 }
 
+export async function aplicarModeloPCFP(cargoId, modeloId) {
+  return await api.post("/pcfp/aplicar-modelo", {
+    cargo_id: cargoId,
+    modelo_id: modeloId
+  });
+}
 
-export async function calcularPCFP(cargoId, estrutura, parametros) {
+export async function salvarVersaoPCFP(payload) {
+  return await api.post("/pcfp/salvar-versao", payload);
+}
 
+
+export async function calcularPCFP(cargoId, estrutura, parametros, cctId = null) {
   const payload = {
     cargo_id: cargoId,
     estrutura,
-    parametros
+    parametros,
+    ...(cctId ? { cct_id: cctId } : {})
   };
 
   const response = await api.post("/pcfp/calcular", payload);
-
   return response;
 }
 
@@ -40,6 +44,5 @@ export async function salvarEstruturaPCFP(payload) {
 }
 
 export async function simularEstruturaPCFP(payload) {
-  const response = await api.post("/pcfp/simular-estrutura", payload);
-  return response;
+  return await api.post("/pcfp/simular-estrutura", payload);
 }

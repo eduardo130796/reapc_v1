@@ -50,3 +50,9 @@ def criar_usuario(data: dict):
         .execute()
 
     return res.data[0]
+
+def deletar(user_id: str):
+    supabase_admin.table("usuarios") \
+        .delete() \
+        .eq("id", user_id) \
+        .execute()

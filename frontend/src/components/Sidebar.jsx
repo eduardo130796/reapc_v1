@@ -10,7 +10,9 @@ import {
   CalculatorIcon,
   ShieldCheckIcon,
   UserCircleIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  DocumentTextIcon,
+  BriefcaseIcon
 } from "@heroicons/react/24/outline";
 import { 
   Squares2X2Icon as Squares2X2IconSolid,
@@ -18,7 +20,9 @@ import {
   FolderOpenIcon as FolderOpenIconSolid,
   UsersIcon as UsersIconSolid,
   CalculatorIcon as CalculatorIconSolid,
-  ShieldCheckIcon as ShieldCheckIconSolid
+  ShieldCheckIcon as ShieldCheckIconSolid,
+  DocumentTextIcon as DocumentTextIconSolid,
+  BriefcaseIcon as BriefcaseIconSolid
 } from "@heroicons/react/24/solid";
 
 const LOGO = (
@@ -43,6 +47,9 @@ const menuSections = [
     items: [
       { name: "Modelos PCFP", path: "/modelos", Icon: DocumentDuplicateIcon, IconActive: DocumentDuplicateIconSolid },
       { name: "Contratos", path: "/contratos",  Icon: FolderOpenIcon, IconActive: FolderOpenIconSolid },
+      { name: "CCTs (Convenções)", path: "/ccts", Icon: DocumentTextIcon, IconActive: DocumentTextIconSolid },
+      { name: "Sindicatos", path: "/sindicatos", Icon: FolderOpenIcon, IconActive: FolderOpenIconSolid },
+      { name: "Cargos", path: "/cargos-base", Icon: BriefcaseIcon, IconActive: BriefcaseIconSolid },
       { name: "Repactuações", path: "/repactuacoes", Icon: CalculatorIcon, IconActive: CalculatorIconSolid },
     ]
   },
@@ -68,7 +75,7 @@ export default function Sidebar({ isOpen, onClose, className = "", mobile }) {
       ...section,
       items: section.items.filter(item => {
         if (isAdmin) return true;
-        if (isGestor) return ["Dashboard", "Modelos PCFP", "Contratos", "Repactuações"].includes(item.name);
+        if (isGestor) return ["Dashboard", "Modelos PCFP", "Contratos", "CCTs (Convenções)", "Cargos", "Sindicatos", "Repactuações"].includes(item.name);
         if (isTecnico) return ["Dashboard", "Repactuações"].includes(item.name);
         return false;
       })

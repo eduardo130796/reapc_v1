@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from app.schemas.usuarios_schema import UsuarioCreate
+from app.schemas.usuarios_schema import UsuarioCreate, UsuarioUpdate
 from app.services.usuarios_service import *
 from app.core.dependencies import require_role
 
@@ -23,3 +23,20 @@ def atualizar_role(
     user = Depends(require_role("admin"))
 ):
     return atualizar_role_service(user_id, role_id, user)
+
+
+@router.put("/{user_id}")
+def atualizar(
+    user_id: str,
+    payload: UsuarioUpdate,
+    user = Depends(require_role("admin"))
+):
+    return atualizar_usuario_service(user_id, payload, user)
+
+
+@router.delete("/{user_id}")
+def excluir_usuario(
+    user_id: str,
+    user=Depends(require_role("admin"))
+):
+    return excluir_usuario_service(user_id, user)

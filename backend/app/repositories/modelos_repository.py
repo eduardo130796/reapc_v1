@@ -16,6 +16,15 @@ def buscar_por_nome(nome: str):
         .execute().data
 
 
+def buscar_por_id(modelo_id: str):
+    res = supabase.table("modelos_pcfp") \
+        .select("*") \
+        .eq("id", modelo_id) \
+        .single() \
+        .execute()
+    return res.data if res.data else None
+
+
 def inserir(data: dict):
     res = supabase.table("modelos_pcfp") \
         .insert(data) \

@@ -14,10 +14,14 @@ export default function UsuarioModal({
     password: "",
     role_id: ""
   });
-
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const isInvalid =
+    !form.nome || !form.email || (!initialData && !form.password) || !form.role_id;
 
   useEffect(() => {
+    if (!open) return;
+
     if (initialData) {
       setForm({
         nome: initialData.nome || "",
@@ -33,9 +37,19 @@ export default function UsuarioModal({
         role_id: ""
       });
     }
-  }, [initialData]);
+
+    setError("");
+  }, [initialData, open]);
 
   if (!open) return null;
+  function validar() {
+    if (!form.nome.trim()) return "Nome é obrigatório";
+    if (!form.email.trim()) return "Email é obrigatório";
+    if (!initialData && !form.password) return "Senha é obrigatória";
+    if (!form.role_id) return "Selecione uma role";
+
+    return null;
+  }
 
   function handleChange(e) {
     setForm({
@@ -43,11 +57,27 @@ export default function UsuarioModal({
       [e.target.name]: e.target.value
     });
   }
-
   async function handleSubmit() {
+    const erro = validar();
+
+    if (erro) {
+      setError(erro);
+      return;
+    }
+    const payload = {
+      nome: form.nome.trim(),
+      email: form.email.trim(),
+      role_id: form.role_id,
+      ...(initialData ? {} : { password: form.password })
+    };
+
     setLoading(true);
+    setError("");
+
     try {
       await onSave(form);
+    } catch (e) {
+      setError(e);
     } finally {
       setLoading(false);
     }
@@ -57,6 +87,11 @@ export default function UsuarioModal({
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
       <div className="bg-white rounded-xl shadow-lg p-6 w-[500px]">
+        {error && (
+          <div className="text-red-600 text-sm mt-2">
+            {error}
+          </div>
+        )}
 
         <h2 className="text-xl font-semibold mb-6">
           {initialData ? "Editar usuário" : "Novo usuário"}
@@ -119,7 +154,7 @@ export default function UsuarioModal({
 
           <button
             onClick={handleSubmit}
-            disabled={loading}
+            disabled={loading || isInvalid}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg"
           >
             {loading ? "Salvando..." : "Salvar"}

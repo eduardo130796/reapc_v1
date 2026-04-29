@@ -2,15 +2,17 @@ import { useState, useEffect } from "react";
 import { atualizarContrato } from "../../services/contratosService";
 import { mapContratoToAPI } from "../../services/mappers/contratoMapper";
 import Modal from "../ui/Modal";
-import { 
-  HashtagIcon, 
-  UserGroupIcon, 
-  DocumentTextIcon, 
-  CalendarIcon, 
+import {
+  HashtagIcon,
+  UserGroupIcon,
+  DocumentTextIcon,
+  CalendarIcon,
   CurrencyDollarIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
+  BookOpenIcon
 } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
+
 
 export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
   const [form, setForm] = useState({
@@ -23,6 +25,7 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
     status: "Vigente"
   });
   const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     if (contrato) {
@@ -49,7 +52,9 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
     if (e) e.preventDefault();
     setLoading(true);
     try {
-      const payload = mapContratoToAPI(form);
+      const payload = {
+        ...mapContratoToAPI(form)
+      };
       await atualizarContrato(contrato.id, payload);
       toast.success("Contrato atualizado com sucesso!");
       onSuccess?.();
@@ -69,13 +74,13 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
       title="Editar Contrato"
       footer={(
         <div className="flex items-center gap-3">
-          <button 
+          <button
             onClick={onClose}
             className="px-6 py-3 text-sm font-bold text-slate-500 hover:text-foreground transition-all"
           >
             Cancelar
           </button>
-          <button 
+          <button
             onClick={handleSubmit}
             disabled={loading}
             className="px-8 py-3 bg-slate-900 dark:bg-primary text-white font-black rounded-2xl hover:brightness-110 shadow-xl shadow-primary/20 border-b-4 border-slate-700 dark:border-primary-dark active:translate-y-1 active:border-b-0 transition-all flex items-center gap-2 disabled:opacity-50"
@@ -88,26 +93,26 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
     >
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input 
-            label="Número do Contrato" 
-            name="numero" 
-            value={form.numero} 
+          <Input
+            label="Número do Contrato"
+            name="numero"
+            value={form.numero}
             onChange={handleChange}
             icon={<HashtagIcon className="w-5 h-5" />}
           />
-          <Input 
-            label="Fornecedor" 
-            name="fornecedor_nome" 
-            value={form.fornecedor_nome} 
+          <Input
+            label="Fornecedor"
+            name="fornecedor_nome"
+            value={form.fornecedor_nome}
             onChange={handleChange}
             icon={<UserGroupIcon className="w-5 h-5" />}
           />
         </div>
 
-        <Input 
-          label="Objeto do Contrato" 
-          name="objeto" 
-          value={form.objeto} 
+        <Input
+          label="Objeto do Contrato"
+          name="objeto"
+          value={form.objeto}
           onChange={handleChange}
           icon={<DocumentTextIcon className="w-5 h-5" />}
         />
@@ -131,32 +136,33 @@ export default function EditarContratoModal({ contrato, onClose, onSuccess }) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Input 
-            label="Início Vigência" 
-            name="vigencia_inicio" 
+          <Input
+            label="Início Vigência"
+            name="vigencia_inicio"
             type="date"
-            value={form.vigencia_inicio} 
+            value={form.vigencia_inicio}
             onChange={handleChange}
             icon={<CalendarIcon className="w-5 h-5" />}
           />
-          <Input 
-            label="Fim Vigência" 
-            name="vigencia_fim" 
+          <Input
+            label="Fim Vigência"
+            name="vigencia_fim"
             type="date"
-            value={form.vigencia_fim} 
+            value={form.vigencia_fim}
             onChange={handleChange}
             icon={<CalendarIcon className="w-5 h-5" />}
           />
         </div>
 
-        <Input 
-          label="Valor Global / Anual" 
-          name="valor_global" 
+        <Input
+          label="Valor Global / Anual"
+          name="valor_global"
           type="number"
-          value={form.valor_global} 
+          value={form.valor_global}
           onChange={handleChange}
           icon={<CurrencyDollarIcon className="w-5 h-5" />}
         />
+
       </div>
     </Modal>
   );

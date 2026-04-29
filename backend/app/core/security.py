@@ -68,10 +68,10 @@ def get_current_user(
         raise HTTPException(401, "Token inválido")
 
     # 🔥 buscar usuário + role + permissions
-    profile = supabase.table("users_profile") \
-        .select("id, email, role_id") \
-        .eq("id", user_id) \
-        .execute()
+    profile = supabase.table("usuarios") \
+    .select("id, email, role_id") \
+    .eq("auth_user_id", user_id) \
+    .execute()
 
     if not profile.data:
         raise HTTPException(403, "Usuário não tem profile")

@@ -3,6 +3,7 @@ from typing import Optional
 
 
 class UsuarioCreate(BaseModel):
+    nome: str
     email: EmailStr
     password: str
     role_id: Optional[str]
@@ -17,3 +18,4 @@ class UsuarioResponse(BaseModel):
 class UsuarioUpdate(BaseModel):
     nome: Optional[str] = None
     password: Optional[str] = None
+    role_id: Optional[str] = None

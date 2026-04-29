@@ -9,9 +9,11 @@ import { toast } from "react-hot-toast";
 import {
   ArrowPathIcon,
   PlusIcon,
-  PencilSquareIcon
+  PencilSquareIcon,
+  TrashIcon
 } from "@heroicons/react/24/outline";
 import UsuarioModal from "../../components/ui/UsuarioModal";
+import { excluirUsuario } from "../../services/usuariosService";
 
 function Card({ title, value, color = "blue" }) {
   return (
@@ -51,8 +53,8 @@ export default function UsuariosTab() {
         listarRoles()
       ]);
 
-      setUsuarios(u || []);
-      setRoles(r || []);
+      setUsuarios(u?.data || []);
+      setRoles(r?.data || []);
 
     } catch (err) {
       console.error(err);
@@ -81,6 +83,7 @@ export default function UsuariosTab() {
     setUsuarioSelecionado(user);
     setOpenModal(true);
   }
+  const userId = localStorage.getItem("user_id");
 
   // =========================
   // SAVE
@@ -271,8 +274,27 @@ export default function UsuariosTab() {
                       <PencilSquareIcon className="w-5 h-5" />
                     </button>
 
-                  </td>
 
+                  </td>
+                  <td>
+                    {u.id !== userId && (
+                      <button
+                        onClick={async () => {
+                          if (!confirm("Deseja excluir este usuário?")) return;
+
+                          try {
+                            await excluirUsuario(u.id);
+                            toast.success("Usuário excluído");
+                            carregar();
+                          } catch (e) {
+                            toast.error(e);
+                          }
+                        }}
+                        className="text-red-600 hover:underline text-sm"
+                      >
+                        Excluir
+                      </button>)}
+                  </td>
                 </tr>
 
               ))}

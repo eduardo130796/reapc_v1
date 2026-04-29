@@ -1,7 +1,9 @@
 from fastapi import HTTPException
+from fastapi.encoders import jsonable_encoder
 from app.core.response import success
 from app.repositories import cargos_repository as repo
 from app.services.audit_service import registrar_log
+from app.repositories import cargos_base_repository
 import requests
 
 
@@ -15,7 +17,17 @@ def listar_cargos_service(contrato_id: str, user):
 
 
 def criar_cargo_service(payload, user):
-    data = repo.inserir(payload.model_dump())
+    cargo_base = cargos_base_repository.buscar_por_id(str(payload.cargo_id))
+    if not cargo_base:
+        raise HTTPException(400, "Cargo base não encontrado no catálogo global")
+
+    # 🔥 VALIDAÇÃO: Evitar duplicidade de cargo no mesmo contrato
+    existente = repo.listar_por_contrato(str(payload.contrato_id))
+    if any(str(c["cargo_id"]) == str(payload.cargo_id) for c in existente):
+        raise HTTPException(400, "Este cargo já está cadastrado neste contrato.")
+
+    data_payload = jsonable_encoder(payload.model_dump())
+    data = repo.inserir(data_payload)
 
     registrar_log(
         user_id=user["id"],
@@ -36,7 +48,7 @@ def atualizar_cargo_service(cargo_id: str, payload, user):
 
     data = repo.atualizar(
         cargo_id,
-        payload.model_dump(exclude_none=True)
+        jsonable_encoder(payload.model_dump(exclude_none=True))
     )
 
     registrar_log(
@@ -93,27 +105,43 @@ def importar_cargos_service(contrato_id: str, user):
     except requests.RequestException:
         raise HTTPException(502, "Erro ao buscar itens do contrato")
 
+    # Buscar todos os cargos base uma vez para cache local
+    from app.repositories import cargos_base_repository
+    cargos_globais_existentes = cargos_base_repository.listar_cargos_base()
+    cargos_globais_map = {c["nome"]: c["id"] for c in cargos_globais_existentes}
+
+    from app.database.client import supabase
+
     cargos = []
 
     for item in itens:
-        nome = item.get("descricao") or item.get("descricao_complementar")
+        nome_raw = item.get("descricao") or item.get("descricao_complementar")
 
-        if not nome:
+        if not nome_raw:
             continue
+            
+        nome = nome_raw.strip().upper()
 
-        valor_raw = item.get("valor_unitario") or item.get("valorunitario") or 0
+        # Determinar qual cargo_base atende. Se não existe, cria!
+        cargo_id_base = cargos_globais_map.get(nome)
+        if not cargo_id_base:
+            try:
+                novo_cargo_base = cargos_base_repository.inserir_cargo_base({"nome": nome})
+                cargo_id_base = novo_cargo_base["id"]
+                cargos_globais_map[nome] = cargo_id_base
+            except Exception:
+                # Caso de race condition na importação 
+                pass
 
-        valor = float(
-            str(valor_raw).replace(".", "").replace(",", ".")
-        )
+        if not cargo_id_base:
+            continue
 
         quantidade = int(item.get("quantidade", 1))
 
         cargos.append({
             "contrato_id": contrato_id,
-            "nome": nome.strip(),
+            "cargo_id": cargo_id_base,
             "quantidade": quantidade,
-            "valor_unitario": valor,
             "status": "ativo"
         })
 

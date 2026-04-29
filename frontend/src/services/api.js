@@ -29,7 +29,8 @@ api.interceptors.response.use(
     }
 
     if (res.data !== undefined) {
-      return res.data;
+      // Retornar o corpo completo para que o frontend use res.data
+      return res;
     }
 
     return res;

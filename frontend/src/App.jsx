@@ -12,6 +12,10 @@ import Usuarios from "./pages/usuarios/Usuarios"
 import Roles from "./pages/roles/Roles"
 import Repactuacoes from "./pages/Repactuacoes"
 import Profile from "./pages/Profile"
+import CCTs from "./pages/CCTs"
+import CCT from "./pages/CCT"
+import Sindicatos from "./pages/Sindicatos";
+import CargosBase from "./pages/CargosBase";
 
 function App() {
   return (
@@ -92,6 +96,42 @@ function App() {
             element={
               <PrivateRoute>
                 <Repactuacoes />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/ccts"
+            element={
+              <PrivateRoute>
+                <CCTs />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/ccts/:id"
+            element={
+              <PrivateRoute>
+                <CCT />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/sindicatos"
+            element={
+              <PrivateRoute>
+                <Sindicatos />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/cargos-base"
+            element={
+              <PrivateRoute>
+                <CargosBase />
               </PrivateRoute>
             }
           />

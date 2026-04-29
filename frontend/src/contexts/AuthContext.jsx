@@ -17,14 +17,26 @@ export function AuthProvider({ children }) {
           // 🔥 BUSCAR DADOS FRESCOS DO SERVIDOR
           const { api } = await import("../services/api");
           const freshUser = await api.get("/auth/me");
-          
-          if (freshUser) {
-            setUser(freshUser);
-            localStorage.setItem("user", JSON.stringify(freshUser));
+
+          if (freshUser?.data?.id) {
+            const userData = freshUser.data;
+
+            if (userData?.id && userData?.role) {
+              setUser(userData);
+            }
+            localStorage.setItem("user", JSON.stringify(userData));
           }
         } catch (err) {
           console.error("Erro ao sincronizar usuário:", err);
-          if (storedUser) setUser(JSON.parse(storedUser));
+          if (storedUser) {
+            const parsed = JSON.parse(storedUser);
+
+            if (parsed?.id && parsed?.role) {
+              setUser(parsed);
+            } else {
+              localStorage.removeItem("user");
+            }
+          }
         }
       } else if (storedUser) {
         setUser(JSON.parse(storedUser));
@@ -32,17 +44,31 @@ export function AuthProvider({ children }) {
 
       setLoading(false);
     }
-    
+
     syncUser();
   }, []);
 
-  function login({ user, token, refresh_token }) {
+  async function login({ user, token, refresh_token }) {
     localStorage.setItem("token", token);
     localStorage.setItem("refresh_token", refresh_token);
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("user_email", user.email);
 
-    setUser(user);
+    try {
+      const { api } = await import("../services/api");
+      const freshUser = await api.get("/auth/me");
+
+      const userData = freshUser?.data;
+
+      if (!userData?.id || !userData?.role) {
+        throw new Error("Usuário inválido");
+      }
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
+
+    } catch (err) {
+      console.error("Erro ao buscar usuário após login", err);
+      throw err;
+    }
   }
 
   function logout() {

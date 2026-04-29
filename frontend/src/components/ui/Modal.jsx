@@ -5,14 +5,15 @@ export default function Modal({
   onClose,
   title,
   children,
-  footer
+  footer,
+  maxWidth = "max-w-lg"
 }) {
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 animate-in fade-in duration-300">
       <div 
-        className="bg-white dark:bg-background border-2 border-border w-full max-w-lg rounded-3xl shadow-2xl shadow-black overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300 ring-1 ring-white/10"
+        className={`bg-white dark:bg-background border-2 border-border w-full ${maxWidth} max-h-[90vh] flex flex-col rounded-3xl shadow-2xl shadow-black overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300 ring-1 ring-white/10`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -30,13 +31,13 @@ export default function Modal({
         </div>
 
         {/* Content */}
-        <div className="p-8 bg-white dark:bg-background text-foreground">
+        <div className="flex-1 overflow-y-auto p-8 bg-white dark:bg-background text-foreground custom-scrollbar">
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
-          <div className="px-8 py-5 bg-slate-50 dark:bg-slate-900/50 border-t border-border flex justify-end gap-3">
+          <div className="px-8 py-5 bg-slate-50 dark:bg-slate-900/50 border-t border-border flex justify-end gap-3 shrink-0">
              {footer}
           </div>
         )}

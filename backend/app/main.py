@@ -23,7 +23,10 @@ from app.routers import (
     usuarios,
     roles,
     auth_router,
-    repactuacao
+    repactuacao,
+    cct_router,
+    sindicatos_router,
+    cargos_base
 )
 
 
@@ -61,6 +64,9 @@ def create_app() -> FastAPI:
     app.include_router(roles.router, prefix="/roles", tags=["Roles"])
     app.include_router(permissions.router, prefix="/permissions", tags=["Permissions"])
     app.include_router(usuarios.router, prefix="/usuarios", tags=["Usuários"])
+    app.include_router(cct_router.router, prefix="/ccts", tags=["CCT"])
+    app.include_router(sindicatos_router.router, prefix="/sindicatos", tags=["Sindicatos"])
+    app.include_router(cargos_base.router, prefix="/cargos-base", tags=["Cargos Base"])
     app.include_router(auth_router.router)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)
     app.add_exception_handler(RequestValidationError, validation_exception_handler)

@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { listarRepactuacoesCargo } from "../../services/repactuacoesService";
 import { excluirCargo } from "../../services/cargosService";
 import { toast } from "react-hot-toast";
-import { 
-  UserCircleIcon, 
+import {
+  UserCircleIcon,
   UserGroupIcon,
   ChevronDownIcon,
   ChevronUpIcon,
@@ -17,6 +17,9 @@ import {
   ArrowPathIcon,
   CheckCircleIcon
 } from "@heroicons/react/24/outline";
+
+import PCFPModal from "../pcfp/PCFPModal";
+import RepactuacaoModal from "../pcfp/RepactuacaoModal";
 
 export default function CargosTable({
   cargos,
@@ -100,6 +103,8 @@ function CargoRow({ cargo: c, isAdmin, onRefresh }) {
   const [repactuacoes, setRepactuacoes] = useState([]);
   const [loadingRep, setLoadingRep] = useState(false);
   const navigate = useNavigate();
+  const [showPCFP, setShowPCFP] = useState(false);
+  const [showRepactuacao, setShowRepactuacao] = useState(false);
 
   const total = (c.quantidade || 0) * (c.valor_unitario || 0);
 
@@ -110,8 +115,8 @@ function CargoRow({ cargo: c, isAdmin, onRefresh }) {
     if (nowOpen && repactuacoes.length === 0) {
       setLoadingRep(true);
       try {
-        const data = await listarRepactuacoesCargo(c.id);
-        setRepactuacoes(data || []);
+        const res = await listarRepactuacoesCargo(c.id);
+        setRepactuacoes(res?.data || []);
       } catch (e) {
         console.error(e);
       } finally {
@@ -122,7 +127,7 @@ function CargoRow({ cargo: c, isAdmin, onRefresh }) {
 
   async function handleExcluir(e) {
     e.stopPropagation();
-    if (!confirm(`Excluir o cargo "${c.nome}"?`)) return;
+    if (!confirm(`Excluir o cargo "${c.cargos_base?.nome || c.nome}"?`)) return;
     try {
       await excluirCargo(c.id);
       toast.success("Cargo removido");
@@ -132,7 +137,7 @@ function CargoRow({ cargo: c, isAdmin, onRefresh }) {
     }
   }
 
-  return (
+  return (<>
     <div className={`
       bg-card border-2 rounded-3xl transition-all duration-300 overflow-hidden
       ${open ? "border-primary/40 shadow-2xl shadow-primary/5" : "border-border shadow-xl shadow-black/5"}
@@ -148,7 +153,7 @@ function CargoRow({ cargo: c, isAdmin, onRefresh }) {
             <UserCircleIcon className="w-6 h-6" />
           </div>
           <div className="min-w-0">
-            <h4 className="text-base font-black text-foreground truncate tracking-tight">{c.nome}</h4>
+            <h4 className="text-base font-black text-foreground truncate tracking-tight uppercase">{c.cargos_base?.nome || c.nome}</h4>
             <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 block">
               ID: {c.id?.slice(0, 8)}
             </span>
@@ -198,13 +203,19 @@ function CargoRow({ cargo: c, isAdmin, onRefresh }) {
               icon={<DocumentTextIcon className="w-4 h-4" />}
               label="Ver PCFP"
               color="slate"
-              onClick={() => navigate(`/cargos/${c.id}/pcfp`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowPCFP(true);
+              }}
             />
             <ActionButton
               icon={<PlusCircleIcon className="w-4 h-4" />}
               label="Nova Repactuação"
               color="primary"
-              onClick={() => navigate(`/cargos/${c.id}/repactuacao`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowRepactuacao(true);
+              }}
             />
             {isAdmin && (
               <ActionButton
@@ -274,15 +285,36 @@ function CargoRow({ cargo: c, isAdmin, onRefresh }) {
           </div>
         </div>
       )}
+      {/* 🔥 MODAL PCFP */}
+      {showPCFP && (
+        <PCFPModal
+          cargo={c}
+          onClose={() => setShowPCFP(false)}
+          onSuccess={onRefresh}
+        />
+      )}
+      {/* 🔥 MODAL REPACTUAÇÃO */}
+      {showRepactuacao && (
+        <RepactuacaoModal
+          cargo={c}
+          onClose={() => setShowRepactuacao(false)}
+          onSuccess={() => {
+            onRefresh?.();
+            setOpen(false); // fecha o accordion para forçar reload do histórico
+            setTimeout(toggleOpen, 100);
+          }}
+        />
+      )}
     </div>
+  </>
   );
 }
 
 function ActionButton({ icon, label, color, onClick }) {
   const colors = {
-    slate:   "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700",
+    slate: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700",
     primary: "bg-primary/10 text-primary hover:bg-primary/20 border-primary/20",
-    danger:  "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-500/20 border-rose-200 dark:border-rose-500/20",
+    danger: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-500/20 border-rose-200 dark:border-rose-500/20",
   };
   return (
     <button

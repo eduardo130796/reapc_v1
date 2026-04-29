@@ -1,13 +1,14 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+import uuid
 
 
 class CargoBase(BaseModel):
-    contrato_id: str
-    nome: str = Field(..., min_length=2)
+    contrato_id: uuid.UUID
+    cargo_id: uuid.UUID
     quantidade: int = Field(default=1, ge=1)
-    valor_unitario: float = Field(default=0, ge=0)
     status: Optional[str] = "ativo"
+    sindicato_id: Optional[uuid.UUID] = None
 
 
 class CargoCreate(CargoBase):
@@ -15,11 +16,15 @@ class CargoCreate(CargoBase):
 
 
 class CargoUpdate(BaseModel):
-    nome: Optional[str]
-    quantidade: Optional[int]
-    valor_unitario: Optional[float]
-    status: Optional[str]
+    quantidade: Optional[int] = None
+    status: Optional[str] = None
+    sindicato_id: Optional[uuid.UUID] = None
 
 
 class CargoResponse(CargoBase):
     id: str
+    cargos_base: Optional[dict] = None
+    sindicato: Optional[dict] = None
+
+    class Config:
+        from_attributes = True

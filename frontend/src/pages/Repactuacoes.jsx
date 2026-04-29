@@ -4,9 +4,9 @@ import { listarContratos } from "../services/contratosService";
 import { listarCargos } from "../services/cargosService";
 import { buscarPCFP } from "../services/pcfpService";
 import NovaRepactuacao from "../components/contratos/repactuacoes/NovaRepactuacao";
-import { 
-  FolderOpenIcon, 
-  MagnifyingGlassIcon, 
+import {
+  FolderOpenIcon,
+  MagnifyingGlassIcon,
   UserGroupIcon,
   ArrowLeftIcon,
   DocumentDuplicateIcon
@@ -16,11 +16,11 @@ export default function Repactuacoes() {
   const [contratos, setContratos] = useState([]);
   const [loadingContratos, setLoadingContratos] = useState(true);
   const [busca, setBusca] = useState("");
-  
+
   const [contratoSelecionado, setContratoSelecionado] = useState(null);
   const [cargos, setCargos] = useState([]);
   const [loadingCargos, setLoadingCargos] = useState(false);
-  
+
   const [cargoSelecionado, setCargoSelecionado] = useState(null);
   const [pcfp, setPcfp] = useState(null);
   const [loadingPcfp, setLoadingPcfp] = useState(false);
@@ -29,8 +29,8 @@ export default function Repactuacoes() {
   useEffect(() => {
     async function carregar() {
       try {
-        const data = await listarContratos();
-        setContratos(data || []);
+        const res = await listarContratos();
+        setContratos(res?.data || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -43,8 +43,8 @@ export default function Repactuacoes() {
   // 2. FILTRAR CONTRATOS
   const contratosFiltrados = useMemo(() => {
     const termo = busca.toLowerCase();
-    return contratos.filter(c => 
-      c.numero?.toLowerCase().includes(termo) || 
+    return contratos.filter(c =>
+      c.numero?.toLowerCase().includes(termo) ||
       c.fornecedor_nome?.toLowerCase().includes(termo)
     );
   }, [contratos, busca]);
@@ -54,8 +54,8 @@ export default function Repactuacoes() {
     setContratoSelecionado(contrato);
     setLoadingCargos(true);
     try {
-      const data = await listarCargos(contrato.id);
-      setCargos(data || []);
+      const res = await listarCargos(contrato.id);
+      setCargos(res?.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -79,11 +79,11 @@ export default function Repactuacoes() {
 
   return (
     <MainLayout title="Central de Repactuações">
-      
+
       {/* NAVEGAÇÃO / BREADCRUMB SIMULADO */}
       <div className="mb-6 flex items-center gap-3">
         {contratoSelecionado && (
-          <button 
+          <button
             onClick={() => {
               setContratoSelecionado(null);
               setCargoSelecionado(null);
@@ -96,14 +96,14 @@ export default function Repactuacoes() {
         )}
         <div>
           <h1 className="text-2xl font-bold text-slate-800">
-            {cargoSelecionado ? `Repactuando: ${cargoSelecionado.nome}` : 
-             contratoSelecionado ? `Cargos do Contrato: ${contratoSelecionado.numero}` : 
-             "Selecione um Contrato"}
+            {cargoSelecionado ? `Repactuando: ${cargoSelecionado.nome}` :
+              contratoSelecionado ? `Cargos do Contrato: ${contratoSelecionado.numero}` :
+                "Selecione um Contrato"}
           </h1>
           <p className="text-sm text-slate-500">
             {cargoSelecionado ? "Ajuste os valores para gerar uma nova versão de cálculo." :
-             contratoSelecionado ? "Escolha o cargo que deseja reajustar." :
-             "Escolha o contrato para listar os cargos disponíveis para repactuação."}
+              contratoSelecionado ? "Escolha o cargo que deseja reajustar." :
+                "Escolha o contrato para listar os cargos disponíveis para repactuação."}
           </p>
         </div>
       </div>
@@ -113,7 +113,7 @@ export default function Repactuacoes() {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="relative max-w-md">
             <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-2.5 text-slate-400" />
-            <input 
+            <input
               placeholder="Buscar por número ou fornecedor..."
               className="w-full pl-10 pr-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm transition-shadow"
               value={busca}
@@ -122,17 +122,17 @@ export default function Repactuacoes() {
           </div>
 
           {loadingContratos ? (
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1,2,3].map(i => <div key={i} className="h-32 bg-slate-100 rounded-2xl animate-pulse" />)}
-             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map(i => <div key={i} className="h-32 bg-slate-100 rounded-2xl animate-pulse" />)}
+            </div>
           ) : contratosFiltrados.length === 0 ? (
-             <div className="bg-white border-2 border-dashed rounded-2xl p-12 text-center text-slate-400">
-                Nenhum contrato encontrado com esses filtros.
-             </div>
+            <div className="bg-white border-2 border-dashed rounded-2xl p-12 text-center text-slate-400">
+              Nenhum contrato encontrado com esses filtros.
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {contratosFiltrados.map(c => (
-                <div 
+                <div
                   key={c.id}
                   onClick={() => handleSelectContrato(c)}
                   className="bg-white border rounded-2xl p-5 cursor-pointer hover:shadow-lg hover:border-indigo-300 transition-all group"
@@ -166,7 +166,7 @@ export default function Repactuacoes() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cargos.map(cargo => (
-                <div 
+                <div
                   key={cargo.id}
                   onClick={() => handleSelectCargo(cargo)}
                   className="bg-white border rounded-2xl p-6 cursor-pointer hover:shadow-lg hover:border-sky-300 transition-all group"
@@ -206,7 +206,7 @@ export default function Repactuacoes() {
               )}
             </div>
           ) : (
-            <NovaRepactuacao 
+            <NovaRepactuacao
               cargoId={cargoSelecionado.id}
               basePcfp={pcfp}
               onCancel={() => setCargoSelecionado(null)}
